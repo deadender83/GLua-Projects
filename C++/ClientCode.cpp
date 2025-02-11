@@ -1,69 +1,94 @@
-#include "Inventory.h"
-#include <iomanip>
+#include "Product.h"
 #include <iostream>
-#include <fstream>
 
-
-using namespace std;
-
+// client code
 // Sam Cardo
-// Client's Code 
 
-// write the showNoProducts() function
-void showNoProducts(const Inventory& inventory)
+void show(Product* productPtr)
 {
-	cout << "The number of products in the inventory is: " << inventory.getNoProducts() << endl;
+	productPtr->show(cout);
 }
 
 int main()
 {
-	cout << fixed << setprecision(2);
-	cout << "Inventory object examples from Inventory.data file:" << endl << endl;
-	Inventory company("Inventory.data", 15);
-	cout << "\nNumber of products = "
-		<< company.getNoProducts() << endl;
-	cout << "printing all products in Inventory.data to the screen:\n\n";
-	company.writeInventory(cout);
-	cout << "\nLooking up product # 54312:\n";
-	company.showProduct(54312); //should be in Inventory.data, if not add it
-	cout << "\nIncrease price by $1.22 for product # 54312\n\n";
-	company.increasePrice(54312, 1.22);
-	cout << "Looking up new price for product # 54312:\n";
-	company.showProduct(54312); //should be incremented
-	cout << "\nLooking up product # 60000:\n";
-	company.showProduct(60000); //incremented over $1000
-	cout << "\n\nIncrease price by $1000 for product # 88888:\n";
-	company.increasePrice(60000, 1000.);
-	cout << "Looking up new price for product # 60000\n\n";
-	company.showProduct(60000); //incremented over $1000
-	cout << "Number of products = " << company.getNoProducts() << endl;
-	cout << "\nprinting all products in Inventory.data screen:\n\n";
-	company.writeInventory(cout);
-	cout << "\n\n\nEmpty object examples from default.data file" << endl << endl;
-	Inventory myshop("default.data"); //empty file
-	cout << "Number of products = " << myshop.getNoProducts() << endl << endl;
-	cout << "Increase price by $1.22 for product # 24000\n\n";//not in file
-	myshop.increasePrice(3483, 1.22);
-	ofstream fout("output.file");
-	if (!fout.is_open())
-	{
-		cout << "error opening file " << endl;
-		system("pause");
-		exit(-1);
-	}
-	fout << fixed << setprecision(2);
-	myshop.writeInventory(fout);
-	cout << "\n\nFull file (products.data file) examples" << endl << endl;
-	Inventory fullLoad("product.data"); //file has more than 25 records
-	fullLoad.increasePrice(854, 2.00);
-	fullLoad.writeInventory(cout);
-	cout << "Number of products = " << fullLoad.getNoProducts()
-		<< endl << endl;
-	cout << "\nLooking up product # 666:\n";
-	fullLoad.showProduct(666); //pass one that doesn't exist
-	//add the code to call your showNoProducts() function here
-	showNoProducts(company);
+	// do not change my main except where you call the polymorphic function as indicated below
+	cout << "1a) Create dynamic Product (non default): " << endl;
+	Product* phone = new Product(90, "Android cell");
+	assert(phone);
+	cout << "Name= " << phone->getProductName() << endl;
+	cout << "Bar code=" << phone->getBarCode() << endl << endl;
+	phone->show(cout);
+	cout << "Call polymorphic function:\n ";
+	show(phone);
 
-	system("type output.file");
+	cout << endl << endl;
+	delete phone;
+
+	cout << "1b) Create dynamic Product (default): " << endl;
+	Product* item = new Product;
+	assert(item);
+	cout << "Name= " << item->getProductName() << endl;
+	cout << "Bar code=" << item->getBarCode() << endl << endl;
+	item->show(cout);
+	cout << "Call polymorphic function:\n ";
+	show(item);
+
+	cout << endl << endl;
+	delete item;
+
+	cout << "2a) Create dynamic PrePackedFood (non default): " << endl;
+	PrePackedFood* pasta = new PrePackedFood(40, "spaghetti", -.67);
+	assert(pasta);
+	cout << "Name= " << pasta->getProductName() << endl;
+	cout << "Bar code=" << pasta->getBarCode() << endl << endl;
+	cout << "Unit Price=" << pasta->getUnitPrice() << endl << endl;
+	pasta->show(cout);
+	cout << "Call polymorphic function:\n ";
+	show(pasta);
+
+	cout << endl << endl;
+	delete pasta;
+
+	cout << "2b) Create dynamic Prepacked (default): " << endl;
+	PrePackedFood* food = new PrePackedFood;
+	assert(food);
+	cout << "Name= " << food->getProductName() << endl;
+	cout << "Bar code=" << food->getBarCode() << endl << endl;
+	cout << "Unit Price=" << food->getUnitPrice() << endl << endl;
+	food->show(cout);
+	cout << "Call polymorphic function:\n ";
+	show(food);
+
+	cout << endl << endl;
+	delete food;
+
+	cout << "3a) Create dynamic FreshFood (non default): " << endl;
+	FreshFood* apples = new FreshFood(-6, "Delicious", 1.1, .67);
+	assert(apples);
+	cout << "Name= " << apples->getProductName() << endl;
+	cout << "Bar code=" << apples->getBarCode() << endl << endl;
+	cout << "Weight=" << apples->getWeight() << endl << endl;
+	cout << "Price=" << apples->getUnitPrice() << endl << endl;
+	apples->show(cout);
+	cout << "Call polymorphic function:\n ";
+	show(apples);
+
+	cout << endl << endl;
+	delete apples;
+
+	cout << "3b) Create dynamic FreshFood (default): " << endl;
+	FreshFood* freshPtr = new FreshFood;
+	assert(freshPtr);
+	cout << "Name= " << freshPtr->getProductName() << endl;
+	cout << "Bar code=" << freshPtr->getBarCode() << endl << endl;
+	cout << "Weight=" << freshPtr->getWeight() << endl << endl;
+	cout << "Price=" << freshPtr->getUnitPrice() << endl << endl;
+	freshPtr->show(cout);
+	cout << "Call polymorphic function:\n ";
+	show(freshPtr);
+
+	cout << endl << endl;
+	delete freshPtr;
+
 	system("pause");
 }
